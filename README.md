@@ -4,4 +4,4 @@
 * `clone the repo`
 * `npm install`
 * `npm start`
-* `check it in Localhost:3000`
+* `rdv at Localhost:3000`

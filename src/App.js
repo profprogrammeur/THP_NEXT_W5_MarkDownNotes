@@ -1,45 +1,46 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Paragraphs from './components/Paragraphs';
-import TotalAmount from './components/TotalAmount';
-import Test from './components/Test';
-
-
+import MarkdownInput from './components/MarkdownInput';
+import NoteDisplay from './components/NoteDisplay';
+import NotesList from './components/NotesList';
 
 function App() {
-  let myVariable = 10
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Test />
-        <p>
-          Edito <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <Paragraphs />
-        <TotalAmount />
-        <TotalAmount />
-        <ul>
-          <li>Boooooks: </li>
-          <li>Pencils: <TotalAmount amount={125689} /></li>
-          <li>Erasers: <TotalAmount /></li>
-        </ul>
+  const [textMarkdowned, setTextMarkdowned]=React.useState("")
+  const getText = (textComponent) => { 
+    setTextMarkdowned(textComponent)
+ }
 
-        <div>
-          {myVariable === 0 ? <span>Nothing</span> : <span>{myVariable} €</span>}
-          <h1>Hello world!</h1>
-       
-          <p>How are you?</p>
-        </div>
+  const clearDisplayNote = () => {
+    setTextMarkdowned("")
+  }
+
+  const [notes, setNotes] = React.useState([])
+  const DisplayList = () => {
+    let noteId = localStorage.getItem('noteId');
+    noteId = Number.parseInt(noteId);
+    let notesArray=[]
+    for (let i=0;i<noteId;i++){
+     notesArray.push(localStorage.getItem(`note${i}`))
+    }
+    setNotes(notesArray)
+    console.log("arrraay: "+ notesArray)
+  }
+  React.useEffect(() => { DisplayList() }, []);
+
+
+  return (
+    <div className="App container-fluid">
+      <div className='row'>
+        <div className="col-3 bg-success">
+        <NotesList notes={notes}/>
+      </div>
+      <header className="App-header col-9">
+        <img src={logo} className="App-logo" alt="logo" />
+        <NoteDisplay text={textMarkdowned}/>
+        <MarkdownInput onChange={getText} refreshDisplay={DisplayList} clearDisplayNote={clearDisplayNote}/>
       </header>
+      </div>
     </div>
   );
 }
